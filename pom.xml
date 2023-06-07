@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.imss</groupId>
-	<artifactId>mssivimss-servicios-externos</artifactId>
+	<artifactId>mssivimss-notificaciones</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>mssivimss-servicios-externos</name>
-	<description>Ms permisos</description>
+	<name>mssivimss-notificaciones</name>
+	<description>Ms notificaciones</description>
 	<properties>
 		<java.version>1.8</java.version>
 		<lombok.version>1.18.24</lombok.version>
