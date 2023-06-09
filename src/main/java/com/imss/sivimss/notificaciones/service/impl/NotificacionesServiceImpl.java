@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.imss.sivimss.notificaciones.configuration.MyBatisConnect;
 import com.imss.sivimss.notificaciones.configuration.mymapper.Consultas;
+import com.imss.sivimss.notificaciones.utils.LogUtil;
 import com.imss.sivimss.notificaciones.beans.ServicioSalas;
 import com.imss.sivimss.notificaciones.service.NotificacionesService;
 
@@ -27,7 +29,12 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 	protected static Consultas consultas = null;
 	protected static AnnotationConfigApplicationContext context = null;
 	
+	@Autowired
+	private LogUtil logUtil;
+	
 	private static final Logger log = LoggerFactory.getLogger(NotificacionesService.class);
+	
+	private static final String CONSULTA = "consulta";
 	
 	@Override
 	public List<Map<String, Object>> tiempoSalas(Authentication authentication) throws IOException {
@@ -43,6 +50,7 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 		   
 		} catch (Exception e) {
 			log.error(e.getMessage());
+			logUtil.crearArchivoLog(Level.SEVERE.toString(), this.getClass().getSimpleName(), this.getClass().getPackage().toString(), e.getMessage(), CONSULTA, authentication);
 			return null;
 		}
 	}
