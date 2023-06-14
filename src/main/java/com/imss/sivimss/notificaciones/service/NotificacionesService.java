@@ -8,6 +8,6 @@ import org.springframework.security.core.Authentication;
 
 public interface NotificacionesService {
 	
-	List<Map<String, Object>> tiempoSalas(Authentication authentication) throws IOException;
+	List<Map<String, Object>> tiempoSalas(Authentication authentication, Integer idPermiso) throws IOException;
 
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,10 +21,10 @@ public class NotificacionesController {
 	@Autowired
 	private NotificacionesService notificacionesService;
 	
-	@GetMapping("/tiempo-salas")
-	public Response<Object> tiempoSalas(Authentication authentication) throws IOException {
+	@GetMapping("/tiempo-salas/{idPermiso}")
+	public Response<Object> tiempoSalas(Authentication authentication, @PathVariable Integer idPermiso) throws IOException {
 		
-		return new Response<>(false, HttpStatus.OK.value(), AppConstantes.EXITO, notificacionesService.tiempoSalas(authentication));
+		return new Response<>(false, HttpStatus.OK.value(), AppConstantes.EXITO, notificacionesService.tiempoSalas(authentication, idPermiso));
 		
 	}
 	
