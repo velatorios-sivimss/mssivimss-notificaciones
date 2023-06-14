@@ -18,9 +18,9 @@ public interface Consultas {
 	}
 
 	@SelectProvider(type = PureSqlProvider.class, method = "sql")
+	public Integer contar(String sql);
+	
+	@SelectProvider(type = PureSqlProvider.class, method = "sql")
 	public List<Map<String, Object>> selectHashMap(String sql);
-
-	@UpdateProvider(type = PureSqlProvider.class, method = "sql")
-	public Boolean actualizar(String sql);
 	
 }
