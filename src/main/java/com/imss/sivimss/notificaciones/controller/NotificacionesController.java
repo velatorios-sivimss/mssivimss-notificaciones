@@ -21,10 +21,10 @@ public class NotificacionesController {
 	@Autowired
 	private NotificacionesService notificacionesService;
 	
-	@GetMapping("/tiempo-salas/{idPermiso}")
-	public Response<Object> tiempoSalas(Authentication authentication, @PathVariable Integer idPermiso) throws IOException {
+	@GetMapping("/tiempo-salas/{idFuncionalidad}")
+	public Response<Object> tiempoSalas(Authentication authentication, @PathVariable Integer idFuncionalidad) throws IOException {
 		
-		return new Response<>(false, HttpStatus.OK.value(), AppConstantes.EXITO, notificacionesService.tiempoSalas(authentication, idPermiso));
+		return new Response<>(false, HttpStatus.OK.value(), AppConstantes.EXITO, notificacionesService.tiempoSalas(authentication, idFuncionalidad));
 		
 	}
 	

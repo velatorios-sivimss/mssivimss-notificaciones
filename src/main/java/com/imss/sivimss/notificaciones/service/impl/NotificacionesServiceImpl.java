@@ -40,7 +40,7 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 	private static final String CONSULTA = "consulta";
 	
 	@Override
-	public List<Map<String, Object>> tiempoSalas(Authentication authentication, Integer idPermiso) throws IOException {
+	public List<Map<String, Object>> tiempoSalas(Authentication authentication, Integer idFuncionalidad) throws IOException {
 		Gson gson = new Gson();
 		String datosJson = String.valueOf(authentication.getPrincipal());
 		UsuarioDto usuario =  gson.fromJson(datosJson,UsuarioDto.class);
@@ -52,9 +52,8 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 		try {
 		   context = con.conectar();
 		   consultas = con.crearBeanDeConsultas();
-		   Integer perm = consultas.contar(permisos.getPermiso(usuario.getIdRol(), idPermiso));
 		   
-		   if (perm > 0) {
+		   if (consultas.contar(permisos.getPermiso(usuario.getIdRol(), idFuncionalidad)) > 0) {
 		       resp = consultas.selectHashMap(servSalas.tiempoSalas());
 		   }
 		   return resp;
