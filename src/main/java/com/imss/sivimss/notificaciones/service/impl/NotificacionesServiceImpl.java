@@ -2,6 +2,7 @@ package com.imss.sivimss.notificaciones.service.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -18,8 +19,11 @@ import org.springframework.stereotype.Service;
 import com.imss.sivimss.notificaciones.configuration.MyBatisConnect;
 import com.imss.sivimss.notificaciones.configuration.mymapper.Consultas;
 import com.imss.sivimss.notificaciones.model.request.UsuarioDto;
+import com.imss.sivimss.notificaciones.model.request.SalaDto;
+import com.imss.sivimss.notificaciones.model.request.GenericoDto;
 import com.imss.sivimss.notificaciones.utils.LogUtil;
 import com.imss.sivimss.notificaciones.beans.ServicioSalas;
+import com.imss.sivimss.notificaciones.beans.Vehiculos;
 import com.imss.sivimss.notificaciones.beans.Permisos;
 import com.imss.sivimss.notificaciones.service.NotificacionesService;
 
@@ -40,30 +44,94 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 	private static final String CONSULTA = "consulta";
 	
 	@Override
-	public List<Map<String, Object>> tiempoSalas(Authentication authentication, Integer idPermiso) throws IOException {
+	public List<Map<String, Object>> tiempoSalas(Authentication authentication, Integer idFuncionalidad) throws IOException {
 		Gson gson = new Gson();
 		String datosJson = String.valueOf(authentication.getPrincipal());
 		UsuarioDto usuario =  gson.fromJson(datosJson,UsuarioDto.class);
-		Permisos permisos = new Permisos();
+		//Permisos permisos = new Permisos();
 		ServicioSalas servSalas = new ServicioSalas();
 		
-		List<Map<String, Object>> resp = new ArrayList<>();
+		List<Map<String, Object>> respQuery = new ArrayList<>();
+		List<Map<String, Object>> respAviso = new ArrayList<>();
 	
 		try {
 		   context = con.conectar();
 		   consultas = con.crearBeanDeConsultas();
-		   Integer perm = consultas.contar(permisos.getPermiso(usuario.getIdRol(), idPermiso));
 		   
-		   if (perm > 0) {
-		       resp = consultas.selectHashMap(servSalas.tiempoSalas());
-		   }
-		   return resp;
+		   //if (consultas.contar(permisos.getPermiso(usuario.getIdRol(), idFuncionalidad)) > 0) {
+		   respQuery = consultas.selectHashMap(servSalas.tiempoSalas(usuario));
+		   respAviso.addAll(respQuery);
+		   //respAviso.addAll(botonesSalas());
+		
+		   return respAviso;
 		   
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			logUtil.crearArchivoLog(Level.SEVERE.toString(), this.getClass().getSimpleName(), this.getClass().getPackage().toString(), e.getMessage(), CONSULTA, authentication);
 			return null;
 		}
+	}
+
+	@Override
+	public List<?> avisos(Authentication authentication) throws IOException {
+		Gson gson = new Gson();
+		String datosJson = String.valueOf(authentication.getPrincipal());
+		UsuarioDto usuario =  gson.fromJson(datosJson,UsuarioDto.class);
+		
+		List<Map<String, Object>> respQuery = new ArrayList<>();
+
+		ServicioSalas servSalas = new ServicioSalas();
+		Vehiculos vehiculos = new Vehiculos();
+		
+		List<GenericoDto> lstGenericos = new ArrayList<>();
+		
+		try {
+			context = con.conectar();
+			consultas = con.crearBeanDeConsultas();
+			
+			respQuery = consultas.selectHashMap(servSalas.tiempoSalas(usuario));
+			
+			for (Map<String, Object> sala : respQuery) {
+				GenericoDto generico = new GenericoDto();
+				generico.setMensaje(sala.get("mensaje").toString());
+				SalaDto salaDto = new SalaDto();
+				salaDto.setIdRegistro((Integer) sala.get("idRegistro"));
+				salaDto.setIdSala(sala.get("idSala").toString());
+				salaDto.setIndTipoSala((boolean) sala.get("indTipoSala"));
+				salaDto.setNombreSala(sala.get("nombreSala").toString());
+				salaDto.setTextoBoton("Registrar salida");
+				salaDto.setUrl("reservar-salas");
+				salaDto.setUsoSala(sala.get("usoSala").toString());
+				generico.setBotones(salaDto);
+				generico.setCu("19");
+				lstGenericos.add(generico);
+			}
+					
+			respQuery = consultas.selectHashMap(vehiculos.verificaInicio(usuario));
+            
+			for (Map<String, Object> vehiculo : respQuery) {
+				GenericoDto generico = new GenericoDto();
+				generico.setMensaje(vehiculo.get("total_sin_verficacion").toString());
+				generico.setCu("40");
+				lstGenericos.add(generico);
+			}
+			
+			respQuery = consultas.selectHashMap(vehiculos.programacionMantenimiento(usuario));
+			for (Map<String, Object> vehiculo : respQuery) {
+				GenericoDto generico = new GenericoDto();
+				generico.setMensaje(vehiculo.get("total").toString());
+				generico.setCu("40");
+				lstGenericos.add(generico);
+			}
+			
+			return lstGenericos;
+			
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			logUtil.crearArchivoLog(Level.SEVERE.toString(), this.getClass().getSimpleName(), this.getClass().getPackage().toString(), e.getMessage(), CONSULTA, authentication);
+			return null;
+		}		
+		
 	}
 
 }

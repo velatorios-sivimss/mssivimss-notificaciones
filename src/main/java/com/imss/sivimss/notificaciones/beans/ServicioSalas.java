@@ -1,5 +1,8 @@
 package com.imss.sivimss.notificaciones.beans;
 
+import com.imss.sivimss.notificaciones.model.request.UsuarioDto;
+import com.imss.sivimss.notificaciones.utils.AppConstantes;
+
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
@@ -7,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ServicioSalas {
 
-	public String tiempoSalas() {
+	public String tiempoSalas(UsuarioDto usuario) {
 	
 		StringBuilder query = new StringBuilder("SELECT SBS.ID_REGISTRO AS idRegistro, SS.IND_TIPO_SALA AS indTipoSala, \n");
 	    query.append("SBS.ID_SALA AS idSala, SS.DES_SALA AS nombreSala, \n");
@@ -22,8 +25,16 @@ public class ServicioSalas {
 	    		+ "	THEN CONCAT('En la sala ' , SS.DES_SALA, ' el tiempo de atención del servicio ha excedido de las 3 horas y media, te recordamos que debes registrar la fecha y hora del término del servicio.') \n"
 	    		+ "END USING UTF8), '') mensaje, \n");
 	    query.append("'reservar-salas' AS path \n");
-	    query.append("FROM SVC_BITACORA_SALAS SBS LEFT JOIN SVC_SALA SS on SBS.ID_SALA = SS.ID_SALA");
-	    //String encoded = DatatypeConverter.printBase64Binary(query.toString().getBytes("UTF-8"));
+	    query.append("FROM SVC_BITACORA_SALAS SBS LEFT JOIN SVC_SALA SS on SBS.ID_SALA = SS.ID_SALA ");
+	    
+	    if (usuario.getIdRol() > AppConstantes.NIVEL_CENTRAL) {
+	    	query.append("LEFT JOIN SVC_VELATORIO vel on SS.ID_VELATORIO = vel.ID_VELATORIO ");
+	    	if (usuario.getIdRol() == AppConstantes.NIVEL_DELEGACION) {
+	    	    query.append(" WHERE vel.ID_DELEAGACION = " + usuario.getIdDelegacion());
+	    	} else {
+	    		query.append(" WHERE vel.ID_VELATORIO = " + usuario.getIdVelatorio());
+	    	}
+	    }
 	   	
 		return query.toString();
 	}

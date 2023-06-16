@@ -29,6 +29,10 @@ public class AppConstantes {
 	public static final String ILLEGALARGUMENTEXCEPTION_MENSAJE = "Token vacío.";
 	public static final String SIGNATUREEXCEPTION_MENSAJE = "Fallo la firma.";
 	public static final String FORBIDDENEXCEPTION_MENSAJE = "No tiene autorización para realizar la solicitud.";
+	
+	public static final Integer NIVEL_CENTRAL = 1;
+	public static final Integer NIVEL_DELEGACION = 2;
+	public static final Integer NIVEL_VELATORIO = 3;
 
 	private AppConstantes() {
 
