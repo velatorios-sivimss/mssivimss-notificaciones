@@ -9,5 +9,7 @@ import org.springframework.security.core.Authentication;
 public interface NotificacionesService {
 	
 	List<Map<String, Object>> tiempoSalas(Authentication authentication, Integer idFuncionalidad) throws IOException;
-
+	
+	List<?> avisos(Authentication authentication) throws IOException;
+	
 }
