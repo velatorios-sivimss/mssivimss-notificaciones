@@ -27,10 +27,10 @@ public class ServicioSalas {
 	    query.append("'reservar-salas' AS path \n");
 	    query.append("FROM SVC_BITACORA_SALAS SBS LEFT JOIN SVC_SALA SS on SBS.ID_SALA = SS.ID_SALA ");
 	    
-	    if (usuario.getIdRol() > AppConstantes.NIVEL_CENTRAL) {
+	    if (usuario.getIdOficina() > AppConstantes.NIVEL_CENTRAL) {
 	    	query.append("LEFT JOIN SVC_VELATORIO vel on SS.ID_VELATORIO = vel.ID_VELATORIO ");
-	    	if (usuario.getIdRol() == AppConstantes.NIVEL_DELEGACION) {
-	    	    query.append(" WHERE vel.ID_DELEAGACION = " + usuario.getIdDelegacion());
+	    	if (usuario.getIdOficina() == AppConstantes.NIVEL_DELEGACION) {
+	    	    query.append(" WHERE vel.ID_DELEGACION = " + usuario.getIdDelegacion());
 	    	} else {
 	    		query.append(" WHERE vel.ID_VELATORIO = " + usuario.getIdVelatorio());
 	    	}
