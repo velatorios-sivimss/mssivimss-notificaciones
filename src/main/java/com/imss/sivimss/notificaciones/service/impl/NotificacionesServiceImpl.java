@@ -103,7 +103,7 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 				salaDto.setUrl("reservar-salas");
 				salaDto.setUsoSala(sala.get("usoSala").toString());
 				generico.setBotones(salaDto);
-				generico.setCu("19");
+				generico.setCu("9");
 				lstGenericos.add(generico);
 			}
 					

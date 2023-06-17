@@ -17,10 +17,10 @@ public class Vehiculos {
 		query.append("FROM SVT_VEHICULOS sv \n");
 		query.append("LEFT JOIN SVT_MTTO_VEHICULAR smv ON sv.ID_VEHICULO = smv.ID_VEHICULO \n");
 		query.append("LEFT JOIN SVT_MTTO_VERIF_INICIO smvi on smvi.ID_MTTOVEHICULAR = smv.ID_MTTOVEHICULAR \n");
-		if (usuario.getIdRol() > AppConstantes.NIVEL_CENTRAL) {
+		if (usuario.getIdOficina() > AppConstantes.NIVEL_CENTRAL) {
 	    	query.append("LEFT JOIN SVC_VELATORIO vel on sv.ID_VELATORIO = vel.ID_VELATORIO ");
-	    	if (usuario.getIdRol() == AppConstantes.NIVEL_DELEGACION) {
-	    	    query.append(" WHERE vel.ID_DELEAGACION = " + usuario.getIdDelegacion());
+	    	if (usuario.getIdOficina() == AppConstantes.NIVEL_DELEGACION) {
+	    	    query.append(" WHERE vel.ID_DELEGACION = " + usuario.getIdDelegacion());
 	    	} else {
 	    		query.append(" WHERE vel.ID_VELATORIO = " + usuario.getIdVelatorio());
 	    	}
@@ -32,7 +32,7 @@ public class Vehiculos {
 	public String programacionMantenimiento(UsuarioDto usuario) {
 		
 		StringBuilder query = new StringBuilder();
-		if (usuario.getIdRol() == AppConstantes.NIVEL_CENTRAL) {
+		if (usuario.getIdOficina() == AppConstantes.NIVEL_CENTRAL) {
 	       query.append("SELECT CONCAT('Tienes ', (SELECT CONVERT(COUNT(ef.ID_MTTOVEHICULAR),CHAR) FROM SVT_MTTO_VEHICULAR ef WHERE ef.ID_MTTOESTADO=3), ");
 	       query.append("' en la Programacion de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
 	       query.append("UNION ALL \n");
@@ -41,7 +41,7 @@ public class Vehiculos {
 	       query.append("UNION ALL \n");
 	       query.append("SELECT CONCAT('Tienes ', (SELECT CONVERT(COUNT(ef.ID_MTTOVEHICULAR),CHAR) FROM SVT_MTTO_VEHICULAR ef WHERE ef.ID_MTTOESTADO=4), ");
 	       query.append("' en la Programacion de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL ");
-		} else if (usuario.getIdRol() == AppConstantes.NIVEL_DELEGACION) {
+		} else if (usuario.getIdOficina() == AppConstantes.NIVEL_DELEGACION) {
 			query.append("SELECT CONCAT('Tienes ', (SELECT CONVERT(COUNT(ef.ID_MTTOVEHICULAR),CHAR) FROM SVT_MTTO_VEHICULAR ef WHERE ef.ID_DELEGACION = " + usuario.getIdDelegacion() + " AND ef.ID_MTTOESTADO=3), ");
 		    query.append("' en la Programacion de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
 		    query.append("UNION ALL \n");
@@ -50,7 +50,7 @@ public class Vehiculos {
 		    query.append("UNION ALL \n");
 		    query.append("SELECT CONCAT('Tienes ', (SELECT CONVERT(COUNT(ef.ID_MTTOVEHICULAR),CHAR) FROM SVT_MTTO_VEHICULAR ef WHERE ef.ID_DELEGACION = " + usuario.getIdDelegacion() + " AND ef.ID_MTTOESTADO=4), ");
 		    query.append("' en la Programacion de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
-		} else if (usuario.getIdRol() == AppConstantes.NIVEL_VELATORIO) {
+		} else if (usuario.getIdOficina() == AppConstantes.NIVEL_VELATORIO) {
 			query.append("SELECT CONCAT('Tienes ', (SELECT CONVERT(COUNT(ef.ID_MTTOVEHICULAR),CHAR) FROM SVT_MTTO_VEHICULAR ef WHERE ef.ID_VELATORIO = " + usuario.getIdVelatorio() + " AND ef.ID_MTTOESTADO=3), ");
 		    query.append("' en la Programacion de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
 		    query.append("UNION ALL \n");
