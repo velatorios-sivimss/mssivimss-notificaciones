@@ -94,6 +94,9 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 			for (Map<String, Object> sala : respQuery) {
 				GenericoDto generico = new GenericoDto();
 				generico.setMensaje(sala.get("mensaje").toString());
+				if (generico.getMensaje().isEmpty()) {
+					continue;
+				}
 				SalaDto salaDto = new SalaDto();
 				salaDto.setIdRegistro((Integer) sala.get("idRegistro"));
 				salaDto.setIdSala(sala.get("idSala").toString());
