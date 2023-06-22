@@ -77,7 +77,6 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 		Gson gson = new Gson();
 		String datosJson = String.valueOf(authentication.getPrincipal());
 		UsuarioDto usuario =  gson.fromJson(datosJson,UsuarioDto.class);
-		
 		List<Map<String, Object>> respQuery = new ArrayList<>();
 
 		ServicioSalas servSalas = new ServicioSalas();
@@ -115,14 +114,21 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 			for (Map<String, Object> vehiculo : respQuery) {
 				GenericoDto generico = new GenericoDto();
 				generico.setMensaje(vehiculo.get("total_sin_verficacion").toString());
+				if (generico.getMensaje().contains(" 0 ")) {
+					continue;
+				}
 				generico.setCu("40");
 				lstGenericos.add(generico);
 			}
 			
 			respQuery = consultas.selectHashMap(vehiculos.programacionMantenimiento(usuario));
+			
 			for (Map<String, Object> vehiculo : respQuery) {
 				GenericoDto generico = new GenericoDto();
 				generico.setMensaje(vehiculo.get("total").toString());
+				if (generico.getMensaje().contains(" 0 ")) {
+					continue;
+				}
 				generico.setCu("40");
 				lstGenericos.add(generico);
 			}
