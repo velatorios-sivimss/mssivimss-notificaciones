@@ -34,31 +34,31 @@ public class Vehiculos {
 		StringBuilder query = new StringBuilder();
 		if (usuario.getIdOficina() == AppConstantes.NIVEL_CENTRAL) {
 	       query.append("SELECT CONCAT('Tienes ', (SELECT CONVERT(COUNT(ef.ID_MTTOVEHICULAR),CHAR) FROM SVT_MTTO_VEHICULAR ef WHERE ef.ID_MTTOESTADO=3), ");
-	       query.append("' Vehiculos en estado ''Finalizado'' en la Programacion de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
+	       query.append("' Vehiculos en estado ''Finalizado'' en la Programación de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
 	       query.append("UNION ALL \n");
 	       query.append("SELECT CONCAT('Tienes ', (SELECT CONVERT(COUNT(ef.ID_MTTOVEHICULAR),CHAR) FROM SVT_MTTO_VEHICULAR ef WHERE ef.ID_MTTOESTADO=2), ");
-	       query.append("' Vehiculos en estado ''Vence Hoy'' en la Programacion de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
+	       query.append("' Vehiculos en estado ''Vence Hoy'' en la Programación de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
 	       query.append("UNION ALL \n");
 	       query.append("SELECT CONCAT('Tienes ', (SELECT CONVERT(COUNT(ef.ID_MTTOVEHICULAR),CHAR) FROM SVT_MTTO_VEHICULAR ef WHERE ef.ID_MTTOESTADO=4), ");
-	       query.append("' Vehiculos en estado ''Cercano'' en la Programacion de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL ");
+	       query.append("' Vehiculos en estado ''Cercano'' en la Programación de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL ");
 		} else if (usuario.getIdOficina() == AppConstantes.NIVEL_DELEGACION) {
 			query.append("SELECT CONCAT('Tienes ', (SELECT CONVERT(COUNT(ef.ID_MTTOVEHICULAR),CHAR) FROM SVT_MTTO_VEHICULAR ef WHERE ef.ID_DELEGACION = " + usuario.getIdDelegacion() + " AND ef.ID_MTTOESTADO=3), \n");
-			query.append("' Vehiculos en estado ''Finalizado'' en la Programacion de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
+			query.append("' Vehiculos en estado ''Finalizado'' en la Programación de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
 		    query.append("UNION ALL \n");
 		    query.append("SELECT CONCAT('Tienes ', (SELECT CONVERT(COUNT(ef.ID_MTTOVEHICULAR),CHAR) FROM SVT_MTTO_VEHICULAR ef WHERE ef.ID_DELEGACION = " + usuario.getIdDelegacion() + " AND ef.ID_MTTOESTADO=2), \n");
-		    query.append("' Vehiculos en estado ''Vence Hoy'' en la Programacion de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
+		    query.append("' Vehiculos en estado ''Vence Hoy'' en la Programación de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
 		    query.append("UNION ALL \n");
 		    query.append("SELECT CONCAT('Tienes ', (SELECT CONVERT(COUNT(ef.ID_MTTOVEHICULAR),CHAR) FROM SVT_MTTO_VEHICULAR ef WHERE ef.ID_DELEGACION = " + usuario.getIdDelegacion() + " AND ef.ID_MTTOESTADO=4), \n");
-		    query.append("' Vehiculos en estado ''Cercano'' en la Programacion de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL ");
+		    query.append("' Vehiculos en estado ''Cercano'' en la Programación de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL ");
 		} else if (usuario.getIdOficina() == AppConstantes.NIVEL_VELATORIO) {
 			query.append("SELECT CONCAT('Tienes ', (SELECT CONVERT(COUNT(ef.ID_MTTOVEHICULAR),CHAR) FROM SVT_MTTO_VEHICULAR ef WHERE ef.ID_VELATORIO = " + usuario.getIdVelatorio() + " AND ef.ID_MTTOESTADO=3), \n");
-			query.append("' Vehiculos en estado ''Finalizado'' en la Programacion de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
+			query.append("' Vehiculos en estado ''Finalizado'' en la Programación de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
 		    query.append("UNION ALL \n");
 		    query.append("SELECT CONCAT('Tienes ', (SELECT CONVERT(COUNT(ef.ID_MTTOVEHICULAR),CHAR) FROM SVT_MTTO_VEHICULAR ef WHERE ef.ID_VELATORIO = " + usuario.getIdVelatorio() + " AND ef.ID_MTTOESTADO=2), \n");
-		    query.append("' Vehiculos en estado ''Vence Hoy'' en la Programacion de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
+		    query.append("' Vehiculos en estado ''Vence Hoy'' en la Programación de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL \n");
 		    query.append("UNION ALL \n");
 		    query.append("SELECT CONCAT('Tienes ', (SELECT CONVERT(COUNT(ef.ID_MTTOVEHICULAR),CHAR) FROM SVT_MTTO_VEHICULAR ef WHERE ef.ID_VELATORIO = " + usuario.getIdVelatorio() + " AND ef.ID_MTTOESTADO=4), \n");
-		    query.append("' Vehiculos en estado ''Cercano'' en la Programacion de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL ");
+		    query.append("' Vehiculos en estado ''Cercano'' en la Programación de Mantenimiento, te recordamos que debes realizarlo') AS total FROM DUAL ");
 		}
 		
 		return query.toString();
