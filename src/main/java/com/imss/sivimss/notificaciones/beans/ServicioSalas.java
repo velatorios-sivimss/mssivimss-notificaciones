@@ -29,7 +29,7 @@ public class ServicioSalas {
 	    
 	    if (usuario.getIdOficina() > AppConstantes.NIVEL_CENTRAL) {
 	    	query.append("LEFT JOIN SVC_VELATORIO vel on SS.ID_VELATORIO = vel.ID_VELATORIO ");
-	    	if (usuario.getIdOficina() == AppConstantes.NIVEL_DELEGACION) {
+	    	if (usuario.getIdOficina().equals(AppConstantes.NIVEL_DELEGACION)) {
 	    	    query.append(" WHERE vel.ID_DELEGACION = " + usuario.getIdDelegacion());
 	    	} else {
 	    		query.append(" WHERE vel.ID_VELATORIO = " + usuario.getIdVelatorio());

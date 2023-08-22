@@ -24,7 +24,7 @@ import com.imss.sivimss.notificaciones.model.request.GenericoDto;
 import com.imss.sivimss.notificaciones.utils.LogUtil;
 import com.imss.sivimss.notificaciones.beans.ServicioSalas;
 import com.imss.sivimss.notificaciones.beans.Vehiculos;
-import com.imss.sivimss.notificaciones.beans.Permisos;
+import com.imss.sivimss.notificaciones.beans.Mensajes;
 import com.imss.sivimss.notificaciones.service.NotificacionesService;
 
 @Service
@@ -43,6 +43,8 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 	
 	private static final String CONSULTA = "consulta";
 	
+	private static final Integer BALANCE_CAJA = 127;
+	
 	@Override
 	public List<Map<String, Object>> tiempoSalas(Authentication authentication, Integer idFuncionalidad) throws IOException {
 		Gson gson = new Gson();
@@ -50,7 +52,7 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 		UsuarioDto usuario =  gson.fromJson(datosJson,UsuarioDto.class);
 		//Permisos permisos = new Permisos();
 		ServicioSalas servSalas = new ServicioSalas();
-		
+	
 		List<Map<String, Object>> respQuery = new ArrayList<>();
 		List<Map<String, Object>> respAviso = new ArrayList<>();
 	
@@ -81,6 +83,7 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 
 		ServicioSalas servSalas = new ServicioSalas();
 		Vehiculos vehiculos = new Vehiculos();
+		Mensajes balanceCaja = new Mensajes();
 		
 		List<GenericoDto> lstGenericos = new ArrayList<>();
 		
@@ -131,6 +134,15 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 				}
 				generico.setCu("40");
 				lstGenericos.add(generico);
+			}
+			
+			respQuery = consultas.selectHashMap(balanceCaja.obtenerMensaje(BALANCE_CAJA));
+			
+			for (Map<String, Object> mensaje : respQuery) {
+				GenericoDto generico = new GenericoDto();
+				generico.setMensaje(mensaje.get("msg").toString());
+				generico.setCu("69");
+			    lstGenericos.add(generico);
 			}
 			
 			return lstGenericos;
