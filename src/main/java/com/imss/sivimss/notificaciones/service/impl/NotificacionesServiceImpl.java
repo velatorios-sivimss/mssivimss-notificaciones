@@ -43,6 +43,8 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 	
 	private static final String CONSULTA = "consulta";
 	
+	private static final Integer BALANCE_CAJA = 127;
+	
 	@Override
 	public List<Map<String, Object>> tiempoSalas(Authentication authentication, Integer idFuncionalidad) throws IOException {
 		Gson gson = new Gson();
@@ -134,7 +136,7 @@ public class NotificacionesServiceImpl implements NotificacionesService {
 				lstGenericos.add(generico);
 			}
 			
-			respQuery = consultas.selectHashMap(balanceCaja.obtenerMensaje(127));
+			respQuery = consultas.selectHashMap(balanceCaja.obtenerMensaje(BALANCE_CAJA));
 			
 			for (Map<String, Object> mensaje : respQuery) {
 				GenericoDto generico = new GenericoDto();
